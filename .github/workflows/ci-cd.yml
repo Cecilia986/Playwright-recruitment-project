@@ -24,7 +24,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                browser: [chromium]
+                browser: [chrome]
             fail-fast: false  #a failure in one browser does not affect other browsers
         
         steps:
@@ -40,10 +40,14 @@ jobs:
             - name: Install dependencies
               run: npm ci
 
-            - name: Install playwright browsers
-              run: npx playwright install --with-deps chromium
+            # - name: Install playwright browsers
+            #   run: npx playwright install --with-deps chromium
+
+            # Install Playwright dependencies only
+            - name: Install playwright dependencies
+              run: npx playwright install-deps --with-deps
             
-            - name: run tests on Chromium
+            - name: run tests on Chrome
               run: npm run test:serial:ci
               env:
                 ENV: qa
