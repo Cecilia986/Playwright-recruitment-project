@@ -17,13 +17,9 @@
     "test:record": "npx playwright codegen",
     "allureReport": "allure generate allure-results --clean",
     "docker:build": "docker build --no-cache-t playwright-tests .",
-    "docker:test": "docker run --rm -v "/$(pwd)/test-results:/app/test-results/" \
-                                    -v "/$(pwd)/html-report:/app/html-report/" \
-                    -e ENV=qa playwright-tests --workers=1",
+    "docker:test": "docker run --rm -v \"/$(pwd)/test-results:/app/test-results/\" -v \"/$(pwd)/html-report:/app/html-report/\" -e ENV=qa playwright-tests --workers=1",
 
-    "docker:test:dev": "docker run --rm -v "/$(pwd)/test-results:/app/test-results/" \
-                                        -v "/$(pwd)/html-report:/app/html-report/" \
-                        -e ENV=dev playwright-tests --workers=1"
+    "docker:test:dev": "docker run --rm -v \"/$(pwd)/test-results:/app/test-results/\" -v \"/$(pwd)/html-report:/app/html-report/\" -e ENV=dev playwright-tests --workers=1"
   },
   "repository": {
     "type": "git",
