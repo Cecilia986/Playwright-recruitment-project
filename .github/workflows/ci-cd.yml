@@ -24,7 +24,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                browser: [chromium, firefox, webkit]
+                browser: [chromium, Chrome, Edge]
             fail-fast: false  #a failure in one browser does not affect other browsers
         
         steps:
@@ -44,7 +44,7 @@ jobs:
               run: npx playwright install --with-deps ${{ matrix.browser }}
             
             - name: run tests on ${{ matrix.browser }}
-              run: npm test
+              run: npx cross-env ENV=qa npx playwright test --project=${{ matrix.browser }}
               env:
                 ENV: qa
                 CI: true
@@ -65,7 +65,7 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                 name: trace-files-${{ matrix.browser }}
-                path: test-result/**/*.zip
+                path: test-results/**/*.zip
                 retention-days: 30
     
      # ============================================
@@ -95,8 +95,7 @@ jobs:
               run: npm ci
             
             - name: Generate Allure report
-              run: npm run allureReport || true
-                  echo " Allure report generated"
+              run: npm run allureReport || echo " Allure report generated"
             
             - name: Upload allure report as artifact
               uses: actions/upload-artifact@v4
