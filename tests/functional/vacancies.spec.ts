@@ -30,8 +30,8 @@ test.describe('Recruitment system - Position management test', () => {
     });
     
     // Verify the vacancy was created successfully
-    await recruitmentPage.searchVacancy(vacancy.vacancyName);
-    // expect(exists).toBeTruthy();
+    const exists = await recruitmentPage.searchVacancy(vacancy.vacancyName);
+    expect(exists).toBeTruthy();
     console.log(`Vacancy "${vacancy.vacancyName}" created successfully.`);
   });
 
@@ -42,7 +42,6 @@ test.describe('Recruitment system - Position management test', () => {
     // Update the vacancy
     console.log(`oldVacancy: "${oldVacancy.vacancyName}", newVacancy: "${updatedVacancy.vacancyName}"`);
     await recruitmentPage.updateVacancy(oldVacancy.vacancyName, updatedVacancy.vacancyName, updatedVacancy.title);
-    console.log('Vacancy was updated successfully!');
     
     const updatedExists = await recruitmentPage.searchVacancy(updatedVacancy.vacancyName);
     expect(updatedExists).toBeTruthy();
