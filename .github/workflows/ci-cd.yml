@@ -24,7 +24,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                browser: [chromium, Chrome, Edge]
+                browser: [chromium, chrome, edge]
             fail-fast: false  #a failure in one browser does not affect other browsers
         
         steps:

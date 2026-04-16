@@ -38,7 +38,7 @@ const config: PlaywrightTestConfig = {
 
   projects: [
     {
-      name: `Chrome`,
+      name: `chrome`,
       use: {
         // Configure the browser to use.
         browserName: `chromium`,
@@ -72,7 +72,7 @@ const config: PlaywrightTestConfig = {
       },
     },
     {
-      name: `Chromium`,
+      name: `chromium`,
       use: {
         browserName: `chromium`,
         baseURL: testConfig[ENV],
