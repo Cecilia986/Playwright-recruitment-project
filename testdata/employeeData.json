@@ -1,0 +1,46 @@
+
+{
+  "employee": [ {
+    "firstName": "Alibaba",
+    "lastName": "test",
+    "middleName": "",
+    "employeeId": "9998_random",
+    "userName": "Alibaba.test2",
+    "passWord": "Test@12345",
+    "joinedDate": "2025-01-01",
+    "jobTitle": "HR Manager",
+    "jobCategory": "Officials and Managers",
+    "subUnit": "Human Resources",
+    "location": "New York Sales Office",
+    "employmentStatus": "Full-Time Permanent"
+  },
+   {
+    "firstName": "Apple",
+    "lastName": "test",
+    "middleName": "",
+    "employeeId": "9999",
+    "userName": "Apple.test",
+    "passWord": "Test@12345",
+    "joinedDate": "2025-01-01",
+    "jobTitle": "Software Engineer",
+    "jobCategory": "Professionals",
+    "subUnit": "Technical Support",
+    "location": "New York Sales Office",
+    "employmentStatus": "Full-Time Permanent"
+  },
+  {
+    "firstName": "Alibaba",
+    "lastName": "test",
+    "middleName": "",
+    "employeeId": "9999",
+    "userName": "Apple.test",
+    "passWord": "Test@12345",
+    "joinedDate": "2025-01-01",
+    "jobTitle": "Software Engineer",
+    "jobCategory": "Professionals",
+    "subUnit": "Development",
+    "location": "New York Sales Office",
+    "employmentStatus": "Full-Time Permanent"
+  }
+]
+}

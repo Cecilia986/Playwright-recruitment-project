@@ -1,0 +1,15 @@
+{
+  "candidates": [
+    {
+      "firstName": "Meta",
+      "lastName": "test",
+      "email": "Alitest@example.com",
+      "phone": "13800138000",
+      "vacancy": "Payroll Administrator",
+      "dateOfApplication": "2025-01-01",
+      "notes": "He passed the screening.",
+      "keywords": ["QA", "Automation", "Selenium"],
+      "resume": "testdata/Resume-test.pdf"
+    }
+  ]
+}

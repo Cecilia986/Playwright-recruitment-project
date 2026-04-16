@@ -1,0 +1,16 @@
+node_modules
+.git
+.github
+test-results
+playwright-report
+allure-results
+.DS_Store
+.vscode
+.idea
+coverage
+.gitignore
+README.md
+docker-run.sh
+docker-run.bat
+*.log
+EOF

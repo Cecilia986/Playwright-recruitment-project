@@ -1,0 +1,108 @@
+import { test, expect } from '@playwright/test';
+import path from 'path';
+import { LoginPage } from '../../pageObjects/LoginPage';
+import { RecruitmentPage } from '../../pageObjects/RecruitmentPage';
+import { CandidateDetailPage } from '../../pageObjects/CandidateDetailPage';
+import candidateData from '../../testdata/candidates.json';
+
+test.describe('Recruitment System - Candidate Management Tests', () => {
+  let loginPage: LoginPage;
+  let recruitmentPage: RecruitmentPage;
+  let candidateDetailPage: CandidateDetailPage;
+
+  const uniqueId = Date.now();
+  const testCandidates = candidateData.candidates[0];
+  const phone = `138${uniqueId.toString().slice(-8)}`;
+  const firstName = testCandidates.firstName + uniqueId.toString().slice(-4); // Ensure unique first name
+
+  // Get absolute path to resume
+  const resumePath = path.resolve(process.cwd(), testCandidates.resume);
+
+  test.beforeEach(async ({ page }) => {
+    loginPage = new LoginPage(page);
+    recruitmentPage = new RecruitmentPage(page);
+    candidateDetailPage = new CandidateDetailPage(page);
+    
+    await loginPage.goto();
+    await loginPage.login();
+    await recruitmentPage.goto();
+    await recruitmentPage.goToCandidates();
+  });
+
+  test('TC-CAN-001: Add new candidate', async () => {
+
+    await candidateDetailPage.addCandidate({
+      firstName: firstName,
+      lastName: testCandidates.lastName,
+      email: testCandidates.email,
+      phone: phone,
+      vacancy: testCandidates.vacancy,
+      notes: testCandidates.notes,
+      date: testCandidates.dateOfApplication,
+      keywords: testCandidates.keywords,
+      resumePath: resumePath
+    });
+    
+    // Verify the candidate was added successfully
+    await recruitmentPage.goToCandidates();
+    const exists = await candidateDetailPage.searchCandidate(`${firstName}`, 
+      `${testCandidates.lastName}`, `${testCandidates.vacancy}`);
+      
+    expect(exists).toBeTruthy();
+    console.log(`Candidate ${firstName} ${testCandidates.lastName} added successfully with phone ${phone}`); // Debug log
+  });
+
+  test('TC-CAN-002: shortlist candidate', async () => {
+
+    // const firstName = firstName;
+    const lastName =  testCandidates.lastName;
+    const vacancyName =  testCandidates.vacancy;
+    
+    // shortlist the candidate for interview and verify
+    await candidateDetailPage.shortlistCandidate(firstName, lastName, vacancyName);
+    
+  });
+
+  test('TC-CAN-003: Schedule interview for candidate', async () => {
+
+    // const firstName = testCandidates.firstName;
+    const lastName =  testCandidates.lastName;
+    const vacancyName =  testCandidates.vacancy;
+    const interviewTitle = 'Initial Interview';
+    const interviewDate = '2026-01-01';
+    const interviewer = 'Alibaba  test';
+
+    // Schedule the interview and verify
+    await candidateDetailPage.scheduleInterview(firstName, lastName, 
+      vacancyName, interviewDate, interviewer);
+
+  });
+
+  // test('TC-CAN-003: Delete candidate', async () => {
+  //   const deleteId = Date.now();
+  //   const candidateToDelete = {
+  //     firstName: `To be deleted${deleteId}`,
+  //     lastName: 'test',
+  //     fullName: `To be deleted${deleteId} test`,
+  //     email: `delete.${deleteId}@example.com`,
+  //     phone: `137${deleteId.toString().slice(-8)}`,
+  //     vacancy: testCandidates.vacancy
+  //   };
+    
+  //   // First, add a candidate
+  //   await candidateDetailPage.addCandidate({
+  //     firstName: candidateToDelete.firstName,
+  //     lastName: candidateToDelete.lastName,
+  //     email: candidateToDelete.email,
+  //     phone: candidateToDelete.phone,
+  //     vacancy: candidateToDelete.vacancy
+  //   });
+    
+  //   // Delete the candidate
+  //   await candidateDetailPage.deleteCandidate(candidateToDelete.fullName);
+    
+  //   // Verify the deletion was successful
+  //   const exists = await candidateDetailPage.searchCandidate(candidateToDelete.fullName);
+  //   expect(exists).toBeFalsy();
+  // });
+});

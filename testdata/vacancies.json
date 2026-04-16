@@ -1,0 +1,32 @@
+{
+  "vacancies": [
+    {
+      "vacancyName": "Senior auto QA 1",
+      "title": "QA Lead",
+      "hiringManager": "Alibaba test",
+      "description": "Be responsible for the design and maintenance of the automated testing framework",
+      "numberOfPositions": 1, 
+      "isActive": true,
+      "publishInRSS": false
+
+    },
+    {
+      "vacancyName": "Frontend Developer",    
+      "title": "Payroll Administrator",
+      "hiringManager": "Alibaba test",
+      "description": "React/Vue Frontend development and maintenance",
+      "numberOfPositions": 2, 
+      "isActive": true,
+      "publishInRSS": false
+    },
+    {
+      "vacancyName": "DevOps Engineer",
+      "title": "Support Specialist",
+      "hiringManager": "Alibaba test",
+      "description": "CI/CD pipeline maintenance",
+      "numberOfPositions": 1, 
+      "isActive": true,
+      "publishInRSS": false
+    }
+  ]
+}

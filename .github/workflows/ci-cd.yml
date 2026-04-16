@@ -1,0 +1,179 @@
+name: CI/CD Pipeline for Playwright Tests
+
+permissions:
+  contents: write
+  pages: write
+
+on:
+  push:
+    branches:
+      - main, master, develop
+  pull_request:
+    branches:
+      - main, master
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:         #Manual triggering is allowing
+
+jobs:
+    # ============================================
+    # Job 1: Run all test cases
+    # ============================================
+    test:
+        name: Run Playwright Tests
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                browser: [chromium, firefox, webkit]
+            fail-fast: false  #a failure in one browser does not affect other browsers
+        
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+            
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                node-version: '18'
+                cache: 'npm'
+            
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Install playwright browsers
+              run: npx playwright install --with-deps ${{ matrix.browser }}
+            
+            - name: run tests on ${{ matrix.browser }}
+              run: npm test
+              env:
+                ENV: qa
+                CI: true
+
+            - name: upload test results
+              if: always()    # Always upload even if fail
+              uses: actions/upload-artifact@v4
+              with:
+                name: test-results-${{matrix.browser}}
+                path: |
+                 test-results/
+                 playwright-report/
+                 test-results.json
+                retention-days: 30
+            
+            - name: Upload trace files
+              if: failure()
+              uses: actions/upload-artifact@v4
+              with:
+                name: trace-files-${{ matrix.browser }}
+                path: test-result/**/*.zip
+                retention-days: 30
+    
+     # ============================================
+     # Job 2: Generate and publish test report
+     # ============================================
+    report:
+        name: Generate and publish Report
+        runs-on: ubuntu-latest
+        needs: test
+        if: always()
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+            
+            - name: Download all test results
+              uses: actions/download-artifact@v4
+              with:
+                path: all-results
+            
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with: 
+                node-version: '18'
+            
+            - name: Install dependencies
+              run: npm ci
+            
+            - name: Generate Allure report
+              run: npm run allureReport || true
+                  echo " Allure report generated"
+            
+            - name: Upload allure report as artifact
+              uses: actions/upload-artifact@v4
+              with: 
+                name: allure-report
+                path: allure-report/
+                retention-days: 30
+         
+            - name: Deploy report to GitHub pages
+              if: github.ref == 'refs/heads/main'
+              uses: peaceiris/actions-gh-pages@v4
+              with:
+                github_token: ${{ secrets.GITHUB_TOKEN}}
+                publish_dir: ./playwright-report
+                destination_dir: test-reports
+                publish_branch: gh-pages
+    
+    # ============================================
+    # Job 3: Code quality inspect
+    # ============================================
+    quality:
+        name: Code Quality Checks
+        runs-on: ubuntu-latest
+        if: github.event_name == 'pull_request'
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                node-version: '18'
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Run TypeScript type check
+              run: npx tsc --noEmit
+
+            - name: Run ESLint
+              run: npx eslint . --ext .ts --max-warnings 0
+
+     # ============================================
+     # Job 4: Notification
+     # ============================================
+    notify:
+        name: Send Notification
+        runs-on: ubuntu-latest
+        needs: [test, report]
+        if: always() && github.ref == 'refs/heads/main'
+
+        steps:
+        - name: Check test status
+          id: status
+          run: |
+            if [ "${{ needs.test.result }}" = "success" ]; then
+                echo "status= Tests Passed" >> $GITHUB_OUTPUT
+                echo "color=good" >> $GITHUB_OUTPUT
+            else
+                echo "status= Tests Failed" >> $GITHUB_OUTPUT
+                echo "color=danger" >> $GITHUB_OUTPUT
+            fi
+
+        
+        - name: Send to Slack
+          uses: slackapi/slack-github-action@v1.24.0
+          with:
+           payload: |
+            {
+             "text": "${{ steps.status.outputs.status }} - Playwright Tests",
+             
+             }
+          env:
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}        
+
+
+
+            
+            
