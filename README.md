@@ -1,7 +1,7 @@
 #  Project Overview
 
 This project implements a **production-style automation framework** that supports testing of Recruitment system.
-The framework supports containerized execution using Docker and automated CI/CD pipelines using GitHub Actions.
+The framework supports containerized execution using Docker and automated CI/CD pipelines using GitHub Actions. After execution is complete, test result notifications are sent to a Slack app.
 The framework is designed using **Page Object Model (POM)** and modular architecture to ensure maintainability, scalability, and reusability.
 
 Key objectives of this project:
@@ -180,6 +180,7 @@ This project integrates with **GitHub Actions** to automatically execute tests w
 6. Playwright browsers are installed
 7. UI and API tests are executed
 8. Reports are generated automatically
+9. Send the message with test results to Slack app.
 
 ## Benefits
 
