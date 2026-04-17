@@ -7,7 +7,7 @@ The framework is designed using **Page Object Model (POM)** and modular architec
 Key objectives of this project:
 
 - Build a scalable and maintainable automation framework
-- Demonstrate UI and API automation capabilities
+- Demonstrate UI automation capabilities
 - Apply modern automation design patterns
 - Support CI/CD-based test execution
 - Simulate real-world enterprise automation workflows
@@ -19,14 +19,11 @@ The framework follows a modular layered design:
 tests/ 
 
     ├── functional/ # UI test scenarios 
-
     ├── api/ # API test scenarios 
 
 pages/  # Page Object Model classes
 
-utils/  # Reusable helper functions
-
-fixtures/  # Shared test setup
+testdata/  # Store test data
 
 config/    # Environment configuration
 
@@ -57,31 +54,16 @@ reports/   # Test output reports
 
 #  Test Coverage
 
-This framework includes testing for both **UI workflows** and **REST APIs**.
+This framework includes testing for both **UI workflows**.
 
 ##  UI Testing (`tests/functional/`)
 
 ### Covered Scenarios:
-
-
-### Sample UI Test Files:
-
-
-
-##  API Testing (`tests/api/`)
-
-API tests simulate real-world backend workflows.
-
-### Covered Scenarios:
-
-
-### Target APIs:
-
-
-### Sample API Test Files:
-
-- ``
-- 
+-Login
+-Add Employee
+-Add Candidates
+-Complete candidate workflow - Shortlist → Interview → Offer → Hired
+-Add new vacancy and update
 
 #  Tech Stack
 
@@ -89,7 +71,6 @@ API tests simulate real-world backend workflows.
 |----------|------|
 | Language | TypeScript |
 | Test Framework | Playwright |
-| API Testing | Playwright API |
 | Containerization | Docker |
 | CI/CD | GitHub Actions |
 | Reporting | Allure, Ortoni |
@@ -108,8 +89,6 @@ node -v
 npm -v
 
 #  Installation & Setup
-
-Install Docker Desktop
 
 Clone the repository:
 git clone https://github.com/Cecilia986/Playwright-recruitment-project.git
@@ -157,6 +136,7 @@ npx playwright show-report
 The framework supports:
 
 - Chromium
+- Chrome
 - Firefox
 - WebKit
 
