@@ -116,10 +116,15 @@ export class RecruitmentPage {
     await this.searchVacancy(oldvacancyName);
     const editButton = this.page.getByRole('button').filter({ has: this.page.locator('.bi-pencil-fill') });
     await editButton.click();
+    await this.page.waitForTimeout(3000);
 
-    // Update vacancy name and job title
+    // Update vacancy name 
     // await this.page.getByRole('textbox').nth(1).fill(newVacancyName);
-    await this.page.locator('div.oxd-input-group:has-text("Vacancy Name") input').fill(newVacancyName);
+    console.log('The number of textbox:', await this.page.locator('input.oxd-input.oxd-input--active').count() ) //output is 2
+    await this.page.locator('div.oxd-input-group').filter( {hasText: 'Vacancy Name'}).locator('input').fill(newVacancyName);
+
+
+    //Fill Job title
     await this.page.locator('.oxd-select-text.oxd-select-text--active').click();
     await this.page.getByRole('option', { name: newJobTitle, exact: true }).click();
     await this.page.getByRole('button', { name: 'Save' }).click();
