@@ -191,48 +191,17 @@ This project integrates with **GitHub Actions** to automatically execute tests w
 
 #  Automation Workflow
 
-Local Dev Environment
-       │
-       ▼
-   Write test scripts
-   (Playwright + TypeScript)
-       │
-       ▼
-   Run tests inside Docker container
-   (using the same image as CI)
-       │
-       ▼
-   Tests pass locally 
-       │
-       ▼
-   Git Push
-       │
-       ▼
-   GitHub Actions Triggered
-   (on: push, pull_request, or schedule)
-       │
-       ▼
-   Pull the same Docker image
-   (no rebuild needed — use pre-built image from registry)
-       │
-       ▼
-   Install dependencies inside container
-   (npm ci — using cached layers)
-       │
-       ▼
-   Execute tests inside container
-   (npx playwright test)
-       │
-       ▼
-   Generate test reports
-   (JSON, HTML, Allure)
-       │
-       ▼
-   Upload reports as artifacts
-   (for team review and debugging)
-        │
-        ▼
-    Send the test results to App Slack    
+Write test scripts 
+-> Run tests inside Docker container(using the same image as CI)
+-> Tests pass locally 
+-> Git Push
+-> GitHub Actions Triggered(on: push, pull_request, or schedule)
+-> Pull the same Docker image (no rebuild needed — use pre-built image from registry)
+-> Install dependencies inside container (npm ci — using cached layers)
+-> Execute tests inside container (npx playwright test)
+-> Generate test reports (JSON, HTML, Allure)
+-> Upload reports as artifacts(for team review and debugging)
+-> Send the test results to App Slack    
    
 
 
